@@ -1,30 +1,21 @@
-# Tokenize a shell command line.
+# Split a tokenized command line on '|' and validate.
 #
-# Read lines from stdin. For each non-empty line, split it into shell tokens
-# (handling "...", '...', and \\ escapes) and print them as "[tok1] [tok2] ..."
-#
-# On unterminated quote, print "ERR unterminated quote".
-#
-# Hint: Python's shlex.split(line, posix=True) handles all the quoting rules
-# you need. It raises ValueError if a quote is unterminated.
+# For each input line:
+#   - Split on '|', strip whitespace from each segment.
+#   - If any segment is empty, print
+#     "ERR syntax error: empty command in pipeline"
+#   - Otherwise print the segments joined by " | ".
 
 import sys
-import shlex
 
 for line in sys.stdin:
     line = line.rstrip("\n")
     if not line:
         continue
-    # TODO: tokenize 'line' (handle "..", '..', and \\ escapes).
-    # TODO: on error, print "ERR unterminated quote" and continue.
-    # TODO: print [tok] tokens separated by spaces.
-    
-    else:
-        try:
-            args = shlex.split(line)
-            formatted_output = " ".join(f"[{token}]" for token in args)
-            print(formatted_output)
-        except:
-            print("ERR unterminated quote")
+    # TODO: split on '|', validate (no empty segments), and print.
+    segments = [seg.strip() for seg in line.split("|")]
+    if any(seg == "" for seg in segments):
+        print("ERR syntax error: empty command in pipeline")
+        continue
 
-
+    print(" | ".join(segments))
