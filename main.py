@@ -9,6 +9,7 @@
 # you need. It raises ValueError if a quote is unterminated.
 
 import sys
+import shlex
 
 for line in sys.stdin:
     line = line.rstrip("\n")
@@ -17,4 +18,13 @@ for line in sys.stdin:
     # TODO: tokenize 'line' (handle "..", '..', and \\ escapes).
     # TODO: on error, print "ERR unterminated quote" and continue.
     # TODO: print [tok] tokens separated by spaces.
-    pass
+    
+    else:
+        try:
+            args = shlex.split(line)
+            formatted_output = " ".join(f"[{token}]" for token in args)
+            print(formatted_output)
+        except:
+            print("ERR unterminated quote")
+
+
